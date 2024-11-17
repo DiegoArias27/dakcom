@@ -271,8 +271,9 @@
                     <br>
                     <br>
                     9. Propiedad intelectual
-                    Todo el contenido en esta página, incluyendo imágenes, logos y descripciones, es propiedad de
-                    Dakcomweb y está protegido por derechos de autor. No está permitido su uso sin autorización.
+                    Todo el contenido en esta página, incluyendo imágenes, logos y descripciones, es propiedad de Dakcomweb 
+                    y está protegido por derechos de autor. Algunas imágenes de productos han sido obtenidas de Google y 
+                    pertenecen a sus respectivos propietarios. No está permitido su uso sin autorización.
                     <br>
                     <br>
                     10. Privacidad
