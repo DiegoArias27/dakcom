@@ -9,16 +9,16 @@
     <script src="https://kit.fontawesome.com/141be34d11.js" crossorigin="anonymous"></script>
     <link rel="icon" type="image/png" href="icono.png" />
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close" />
     <link rel="stylesheet" href="style.css">
 
+    
     <?php include 'header-principal.php'; ?>
 
 </head>
 
 <body>
-
-
     <!--.................... -->
     <div id="#top"></div>
     <div class="contenedor2">
@@ -52,14 +52,16 @@
                             <div class="auto-btn4"></div>
                         </div>
                         <!--Fin de navegacion-->
-                    </div>
-                    <!--Inicio de navegacion manual-->
-                    <div class="navigation-manual">
+
+                        <div class="navigation-manual">
                         <label for="radio1" class="manual-btn"></label>
                         <label for="radio2" class="manual-btn"></label>
                         <label for="radio3" class="manual-btn"></label>
                         <label for="radio4" class="manual-btn"></label>
                     </div>
+                    </div>
+                    <!--Inicio de navegacion manual-->
+                    
                     <!--Fin de navegacion manual-->
                 </div>
                 <script type="text/javascript">
@@ -127,7 +129,7 @@
         <?php
             try{
                 require_once('bd_conection.php');
-                $sql = " SELECT Id_Categorias, Nombre_categoria, Tipo, Nombre_Producto, Precio, Descripcion, Especificaciones, Fecha, Img FROM inventario INNER JOIN categorias WHERE inventario.Id_cat = categorias.ID AND Fecha >= 2019 ORDER BY RAND() LIMIT 8";
+                $sql = " SELECT Id_Categorias, Nombre_categoria, Tipo, Nombre_Producto, Precio, Descripcion, Especificaciones, Fecha, Img FROM inventario INNER JOIN categorias WHERE inventario.Id_cat = categorias.ID AND Fecha >= 2022 ORDER BY RAND() LIMIT 8";
                 $resultado = $conn->query($sql); 
             } catch (\Eception $e){
                 echo $e->getMessage();
@@ -142,8 +144,10 @@
                         
                         ?>
                 <div class="productos">
-                    <a href="#" class="link">
-                        <img class="rdondear centrarimg" src="<?php echo $productos['Img']; ?>" alt="Computadoras">
+                    <a href="producto.php?id=<?php echo $productos['Id_Categorias']; ?>" class="link">
+                        <div class="tamañoimagen">
+                            <img class="rdondear centrarimg" src="<?php echo $productos['Img']; ?>" alt="Computadoras">
+                        </div>
                         <div class="contenido-producto" id="contenido">
                             <h3>
                                 <?php echo $productos['Nombre_Producto'];?>
@@ -301,14 +305,13 @@
         </div>
     </div>
     <?php include 'footer.php'; ?>
-    <a href="#top">
-        <div class="arriba">
-            <i class="fas fa-angle-up"></i>
-        </div>
+    
+    <?php include 'asistente.php'; ?>
 
-    </a>
 
-    <script src="principal.js"></script>
+    
+
+    
 </body>
 
 </html>
