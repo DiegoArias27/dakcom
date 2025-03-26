@@ -1756,22 +1756,21 @@ body::-webkit-scrollbar-thumb{
 }
 
 
-/* Iniciar sesion */
-
+/* Estilos del botón y del menú */
 .dropdown {
   position: relative;
-  display: inline-block;
+  display: block;
 }
 
 .dropdown-menu {
   display: none;
-  position: absolute;
-  top: 100%; /* Debajo del botón */
-  left: 0;
+  position: fixed;
+  top: 5; /* Coloca el menú debajo del botón */
+  right: 20;
   background-color: white;
   border: 1px solid #ccc;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  z-index: 3000;
   padding: 10px;
   min-width: 200px;
 }
@@ -1788,8 +1787,9 @@ body::-webkit-scrollbar-thumb{
 
 /* Mostrar el menú desplegable al hacer clic */
 .dropdown.active .dropdown-menu {
-  display: block;
+  display: block !important; /* Asegura que se muestre el menú cuando tenga la clase 'active' */
 }
+
 
 /*Factura*/
 /* Modal Background */

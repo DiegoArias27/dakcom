@@ -37,7 +37,6 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             overflow: hidden;
-            max-height: 80%;
             position: relative;
             transform: translateY(-50px);
             animation: slideIn 0.5s ease-out forwards;
