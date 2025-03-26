@@ -111,103 +111,6 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
       }
     });
   </script>
-  
-=======
-
-<?php
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE); // Oculta errores deprecados y avisos
-ini_set('display_errors', 0); // No mostrar errores en la página
-
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Si el usuario hace clic en "Cerrar sesión"
-if (isset($_POST['logout'])) {
-    // Eliminar el token de acceso y destruir la sesión
-    unset($_SESSION['access_token']);
-    session_destroy(); // Destruir toda la sesión
-
-    // Redirigir a la página de inicio o principal (sin iniciar sesión)
-    header("Location: principal.php");
-    exit();
-}
-
-// Verificar si el usuario está autenticado
-$usuario_autenticado = false;
-$nombre = '';
-$correo = '';
-
-if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-    require_once 'config.php';
-    $google_client->setAccessToken($_SESSION['access_token']);
-    $google_service = new Google_Service_Oauth2($google_client);
-    $google_user_info = $google_service->userinfo->get();
-
-    // Obtener el nombre completo y correo del usuario
-    $nombre = $google_user_info['name']; // Nombre completo
-    $correo = $google_user_info['email']; // Correo electrónico
-    $primer_nombre = explode(' ', $nombre)[0]; // Extraer el primer nombre
-    $usuario_autenticado = true;
-}
-?>
-
-<link rel="stylesheet" href="carrito.css">
-<link rel="stylesheet" href="modal.css">
-<nav>
-<script src="principal.js"></script>
-    <div class="header-publicidad" id="publicidad">
-        <p>¡Adelanta tus compras de Navidad!  ❄️  ¿Qué estás esperando?  ❄️  Compra ya!!</p>
-        <span class="material-symbols-rounded" onclick="clo()">
-            close
-        </span>
-    </div>
-</nav>
-
-<div class="headertop">
-    <nav class="navegador contenedor">
-        <a href="principal.php">
-            <img class="icon" src="dakcom.png" width="100px" alt="Logo DakCom">
-        </a>
-        <div class="buscador">
-            <input type="text" name="" id="" placeholder="Buscar">
-            <div class="icon-buscar"><i class="fa fa-search icon-buscar" aria-hidden="true"></i></div>
-        </div>
-        <ul class="nav contenedor">
-            <li>
-                <?php if ($usuario_autenticado): ?>
-                <div class="dropdown">
-                    <a href="#" class="dropdown-toggle" id="userDropdown">
-                        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                        <span class="carrito"><?php echo htmlspecialchars($primer_nombre); ?></span>
-                    </a>
-                    <div class="dropdown-menu" id="dropdownMenu">
-                        <p class="dropdown-item">Nombre: <?php echo htmlspecialchars($nombre); ?></p>
-                        <p class="dropdown-item">Correo: <?php echo htmlspecialchars($correo); ?></p>
-                        <form action="principal.php" method="POST" style="margin: 0;">
-                            <button class="dropdown-item" type="submit" name="logout">Cerrar sesión</button>
-                        </form>
-                    </div>
-                </div>
-            <?php else: ?>
-                <a href="condiciones.php">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <span class="carrito">Iniciar sesión</span>
-                </a>
-            <?php endif; ?>
-
-            </li>
-            <li>
-                <a href="#" id="cartButton">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <span class="carrito">Mi carrito</span>
-                    <i class="fa fa-circle circulo" aria-hidden="true"></i>
-                    <span id="cartCount" class="numero">0</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
     <nav class="all-cat ">
         <div class="contenedor nav2">
             <input type="checkbox" id="btn-menu">
@@ -686,4 +589,3 @@ closeMetodoPagoModal.onclick = function() {
     metodoPagoModal.style.display = "none";
 }
 </script>
->>>>>>> 118987254c38ec40197e4b0ee36fd900ec3f2c38
