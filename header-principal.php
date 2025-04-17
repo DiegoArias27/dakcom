@@ -67,7 +67,9 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                     <div class="dropdown-menu" id="dropdownMenu">
                         <p class="dropdown-item">Nombre: <?php echo htmlspecialchars($nombre); ?></p>
                         <p class="dropdown-item">Correo: <?php echo htmlspecialchars($correo); ?></p>
-                        <a href="panel-compras.php" onclick="showSection('panel-compras')" class="dropdown-item">Compras</a>
+                        <?php if ($es_admin): ?>
+                            <a href="panel-compras.php" onclick="showSection('panel-compras')" class="dropdown-item">Compras</a>
+                        <?php endif; ?>
                         <form action="principal.php" method="POST" style="margin: 0;">
                             <button class="dropdown-item" type="submit" name="logout">Cerrar sesión</button>
                         </form>
