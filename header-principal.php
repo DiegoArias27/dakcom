@@ -29,7 +29,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $primer_nombre = explode(' ', $nombre)[0];
     $usuario_autenticado = true;
 
-    if ($correo === "diegoarias0314@gmail.com") {
+    if ($correo === "alanarturocastroo@gmail.com") {
         $es_admin = true;
     }
 }
@@ -69,6 +69,13 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                         <p class="dropdown-item">Correo: <?php echo htmlspecialchars($correo); ?></p>
                         <?php if ($es_admin): ?>
                             <a href="panel-compras.php" onclick="showSection('panel-compras')" class="dropdown-item">Compras</a>
+                            <p>
+
+                            </p>
+                            <a href="ventas.php" class="dropdown-item">Ventas</a>
+                            <p>
+
+                            </p>
                         <?php endif; ?>
                         <form action="principal.php" method="POST" style="margin: 0;">
                             <button class="dropdown-item" type="submit" name="logout">Cerrar sesión</button>
@@ -93,6 +100,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
         </ul>
     </nav>
 </div>
+
 
 
 
@@ -562,6 +570,25 @@ function confirmarPago() {
 
     // Mostrar el modal del recibo
     document.getElementById('reciboModal').style.display = 'block';
+
+// Obtener correo del cliente
+const correoCliente = document.getElementById('emailCliente').value;
+
+// Registrar en la base de datos
+fetch('registrar_compra.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        correo: correoCliente,
+        metodo_pago: "PayPal",
+        productos: carrito
+    })
+})
+.then(res => res.json())
+.then(data => console.log("Compra registrada:", data))
+.catch(err => console.error("Error al registrar compra:", err));
+
+
 }
 
 // Cerrar el modal del recibo
