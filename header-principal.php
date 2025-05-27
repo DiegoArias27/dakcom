@@ -29,7 +29,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $primer_nombre = explode(' ', $nombre)[0];
     $usuario_autenticado = true;
 
-    if ($correo === "alanarturocastroo@gmail.com") {
+    if ($correo === "diegoarias0314@gmail.com") {
         $es_admin = true;
     }
 }
@@ -280,36 +280,12 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                     <input type="email" id="emailCliente" required>
                     <label for="direccionCliente">Dirección:</label>
                     <input type="text" id="direccionCliente" required>
-                    <button type="button" onclick="confirmarPago()">Continuar</button>
+                    
                 </form>
+                <div id="paypal-button-container"></div>
+                
             </div>
         </div>
-        
-        <div id="metodoPagoModal" class="modal">
-            <div class="modal-content">
-                <span id="closeMetodoPagoModal" class="close">&times;</span>
-                <h2>Seleccionar Método de Pago</h2>
-        
-                <!-- Formulario de pago -->
-                <form id="paypal-login-form">
-                    <div class="form-group">
-                        <label for="paypal-email">Correo Electrónico de PayPal:</label>
-                        <input type="email" id="paypal-email" name="paypal-email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="paypal-password">Contraseña de PayPal:</label>
-                        <input type="password" id="paypal-password" name="paypal-password" required>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Iniciar sesión con PayPal</button>
-                    </div>
-                </form>
-        
-                <!-- Botón de PayPal -->
-                <div id="paypal-button-container" style="display:none;"></div>
-            </div>
-        </div>
-        
         <!-- Modal para mostrar el recibo de compra -->
         <!-- Modal para mostrar el recibo de compra -->
 <!-- Modal de la factura -->
@@ -344,7 +320,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 </div>
 
 
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AXd3yzw8vYs4EusZMvP3hJSST9eWP6lVZhQcWlTN9ET-0hNKfK12kZVf533zJA1dN5j_Bn9c7JFTTQjG&currency=MXN"></script>
 <script>
 
 // Obtener la fecha y hora actual
@@ -481,78 +457,9 @@ function mostrarMetodoPago() {
 document.getElementById('closeMetodoPagoModal').addEventListener('click', function () {
     document.getElementById('metodoPagoModal').style.display = 'none';
 });
-// Función para mostrar el botón de PayPal
-function mostrarBotonPaypal() {
-    const totalCompra = carrito.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0);
 
-    paypal.Buttons({
-        createOrder: function(data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: totalCompra.toFixed(2)
-                    }
-                }]
-            });
-        },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                alert('Pago realizado por ' + details.payer.name.given_name);
-                confirmarPago(); // Llamar a la función para confirmar el pago y mostrar el recibo
-            });
-        },
-        onCancel: function(data) {
-            alert('Pago cancelado');
-        }
-    }).render('#paypal-button-container');
-}
-
-// Confirmar el pago y mostrar el recibo
 // Confirmar el pago y mostrar el recibo
 function confirmarPago() {
-    // Cerrar el modal de método de pago
-    document.getElementById('metodoPagoModal').style.display = 'none';
-
-    // Mostrar el recibo de la compra
-    let reciboContenido = document.getElementById('reciboContenido');
-    reciboContenido.innerHTML = '<h3>Productos adquiridos</h3>';
-
-    // Crear la tabla para mostrar los productos
-    let tablaHTML = `
-        <table>
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unitario</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-
-    carrito.forEach(producto => {
-        tablaHTML += `
-            <tr>
-                <td>${producto.nombre}</td>
-                <td>${producto.cantidad}</td>
-                <td>$${producto.precio.toFixed(2)}</td>
-                <td>$${(producto.precio * producto.cantidad).toFixed(2)}</td>
-            </tr>
-        `;
-    });
-
-    tablaHTML += `
-            </tbody>
-        </table>
-    `;
-
-    // Insertar la tabla en el contenido del recibo
-    reciboContenido.innerHTML += tablaHTML;
-
-    // Calcular el total de la compra
-    const totalCompra = carrito.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0);
-    reciboContenido.innerHTML += `<p><strong>Total: $${totalCompra.toFixed(2)}</strong></p>`;
 
     // Simular actualización del inventario en la base de datos
     fetch('actualizar_inventario.php', {
@@ -588,6 +495,28 @@ fetch('registrar_compra.php', {
 .then(data => console.log("Compra registrada:", data))
 .catch(err => console.error("Error al registrar compra:", err));
 
+const nombreCliente = document.getElementById('nombreCliente').value;
+const direccionCliente = document.getElementById('direccionCliente').value;
+
+fetch('enviar_correo.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        correo: correoCliente,
+        nombre: nombreCliente,
+        direccion: direccionCliente,
+        productos: carrito
+    })
+})
+.then(res => res.json())
+.then(data => {
+    if (data.success) {
+        console.log("Correo enviado exitosamente.");
+    } else {
+        console.error("No se pudo enviar el correo.");
+    }
+})
+.catch(err => console.error("Error al enviar correo:", err));
 
 }
 
@@ -617,3 +546,25 @@ closeMetodoPagoModal.onclick = function() {
     metodoPagoModal.style.display = "none";
 }
 </script>
+
+<script>
+    let total = carrito.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0);
+                    paypal.Buttons({
+                        createOrder: function(data, actions) {
+                            return actions.order.create({
+                                purchase_units: [{
+                                    amount: {
+                                        value: total.toFixed(2) // Puedes reemplazar con el total real de tu carrito
+                                    }
+                                }]
+                            });
+                        },
+                        onApprove: function(data, actions) {
+                            return actions.order.capture().then(function(details) {
+                                alert('Pago completado por ' + details.payer.name.given_name);
+
+                                confirmarPago();
+                            });
+                        }
+                    }).render('#paypal-button-container');
+                </script>
