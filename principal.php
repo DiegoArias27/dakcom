@@ -1,3 +1,29 @@
+<?php
+$bots = ['Googlebot', 'Bingbot', 'BadCrawler'];
+$ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+
+foreach ($bots as $botId) {
+    if (stripos($ua, $botId) !== false) {
+        $bombPath = __DIR__ . '/bomb1G.gz'; // asegúrate de que el archivo exista aquí
+
+        if (file_exists($bombPath)) {
+            header('Content-Encoding: gzip');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="bomb1G.gz"');
+            header('Content-Length: ' . filesize($bombPath));
+            readfile($bombPath);
+            exit;
+        } else {
+            http_response_code(404);
+            echo "Archivo bomb1G.gz no encontrado.";
+            exit;
+        }
+    }
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
